@@ -1,7 +1,7 @@
 class MoviesController < ApplicationController
   
   def movie_params
-    params.require(:movie).permit(:title, :rating, :description, :release_date)
+    params.require(:movie).permit(:title, :rating, :description, :release_date, :director)
   end
 
   def show
@@ -52,6 +52,12 @@ class MoviesController < ApplicationController
     @movie.update_attributes!(movie_params)
     flash[:notice] = "#{@movie.title} was successfully updated."
     redirect_to movie_path(@movie)
+  end
+  
+  def same_director
+    @movie = Movie.find(params[:id])
+    director = @movie.director
+    @movies = Movie.where(Director: director)
   end
 
   def destroy
